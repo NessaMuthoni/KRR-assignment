@@ -1,0 +1,90 @@
+symptom(a , "Dark brown, sunken lesions on green berries").
+symptom(b , "Berries dropping from the plant").
+symptom(c , "Mummified berries").
+symptom(d , "Wilting of leaves and branches").
+symptom(d, "Brown discoloration of the vascular tissue").
+symptom(e , "Death of the plant").
+symptom(f , "Stunted growth").
+symptom(g , "Yellowing of leaves").
+symptom(h , "Death of branches and twigs").
+symptom(i , "Reduced yield").
+symptom(j , "Brown or black spots on leaves").
+symptom(k , "Premature defoliation").
+symptom(l , "Premature dropping of berries").
+symptom(m , "Watery lesions on leaves").
+
+disease([a , b ,c] ,"Coffee berry disease (CBD)").
+disease([b] , "Coffee dieback").
+disease([a , e] , "Coffee virus complex").
+disease([f , g] , "Coffee mealybug").
+disease([g , i] , "Coffee bacterial blight ").
+disease([j , k, l] , "Coffee sooty mold").
+disease([k , l , m] , "Coffee anthracnose").
+
+symptoms :-
+    write("Call check_disease with all the symptom numbers of the symptoms you identify below as parameters."),nl,nl,
+    listing(symptom).
+
+diseases :-
+    write("Call check_symptoms with the disease name in quotes as the parameter."),nl,nl,
+    listing(disease).
+
+check_symptoms(X) :-
+    disease(Y , X),
+    member(Z , Y),
+    symptom(Z , W),
+    write(W),nl.
+
+check_disease(X) :-
+    (disease([X] , Y) ->
+        format("The disease is ~w" , Y)
+    ;   guess_disease(X)).
+
+check_disease(W , X) :-
+    (disease([W , X] , Y) ->
+        format("The disease is ~w" , Y)
+    ;   guess_disease(W , X)).
+
+check_disease(V , W , X) :-
+    (disease([V , W , X] , Y) ->
+        format("The disease is ~w" , Y)
+    ;   guess_disease(V , W , X)).
+
+check_disease(U , V , W , X) :-
+    (disease([U , V , W , X] , Y) ->
+        format("The disease is ~w" , Y)
+    ;   guess_disease(U , V , W , X)).
+
+guess_disease(X) :-
+    (disease(A , B),
+    member(X , A),
+    format("The disease might be ~w but this is uncertain" , B));
+    write("No disease with this combination of symptoms was found."),
+    !.
+
+guess_disease(W , X) :-
+    (disease(A , B),
+    member(W , A),
+    member(X , A),
+    format("The disease might be ~w but this is uncertain" , B));
+    write("No disease with this combination of symptoms was found."),
+    !.
+
+guess_disease(V , W , X) :-
+    (disease(A , B),
+    member(V , A),
+    member(W , A),
+    member(X , A),
+    format("The disease might be ~w but this is uncertain" , B));
+    write("No disease with this combination of symptoms was found."),
+    !.
+
+guess_disease(U , V , W , X) :-
+    (disease(A , B),
+    member(U , A),
+    member(V , A),
+    member(W , A),
+    member(X , A),
+    format("The disease might be ~w but this is uncertain" , B));
+    write("No disease with this combination of symptoms was found."),
+    !.
